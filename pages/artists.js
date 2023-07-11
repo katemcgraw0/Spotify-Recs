@@ -39,20 +39,20 @@ const ArtistsPage = () => {
       <Head>
         <title>Spotify Favorites App - Artists</title>
       </Head>
-
+  
       <main className="text-center">
         <h1 className="text-3xl font-bold mb-4">Your Favorite Artists</h1>
-
+  
         {artists.length > 0 ? (
-          <ul>
+          <div className="flex flex-wrap justify-center gap-4">
             {artists.map((artist) => (
-              <li key={artist.id}>
-                <img src={artist.images[0].url} alt={artist.name} width={300} height={300} />
-                <p>{artist.name}</p>
+              <div key={artist.id} className="flex flex-col items-center">
+                <p className="text-xl font-bold mb-2">{artist.name}</p>
+                <img src={artist.images[0].url} alt={artist.name} width={300} height={300} className="mx-auto" />
                 <p>{artist.genres.join(', ')}</p>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         ) : (
           <p>No favorite artists found.</p>
         )}
@@ -60,5 +60,4 @@ const ArtistsPage = () => {
     </div>
   );
 };
-
 export default ArtistsPage;

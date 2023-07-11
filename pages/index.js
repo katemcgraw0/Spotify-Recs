@@ -8,6 +8,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
       <Head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
         <title>Spotify Favorites App</title>
       </Head>
 

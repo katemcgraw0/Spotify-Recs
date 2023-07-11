@@ -20,7 +20,8 @@ export const authOptions = {
         }
       
         return token;
-        },
+    },
+
     async session({session,token,user}){
     //session.accessToken = token?.account.access_token || null;
     if (!session) {
@@ -33,8 +34,9 @@ export const authOptions = {
 
     // Store access token in the session
     return session;
-}
-  }
+    }
+  },
+  secret: process.env.SECRET
   
 }
 
