@@ -5,6 +5,7 @@ import querystring from 'querystring';
 
 const handleSpotifyCallback = async (authorizationCode) => {
   try {
+    
     const response = await axios.post('/api/callback', { code: authorizationCode });
     const data = response.data;
     console.log(data); // Process the response data here
