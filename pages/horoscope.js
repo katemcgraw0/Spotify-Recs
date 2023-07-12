@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import {makePrompt} from '/lib/makePrompt.js'
 
-let hasError = false;
+let apiCall = false;
 
 const HoroscopePage = () => {
     const [artists, setArtists] = useState([]);
@@ -23,14 +23,15 @@ const HoroscopePage = () => {
             },
             body: JSON.stringify({ prompt }),
           });
-
+          apiCall = true;
           const data = await response.json();
           setGeneratedText(data.result);
+          console.log(generatedText)
 
         } 
         catch (error) {
           console.error('Error generating horoscope:', error);
-          hasError = true;
+
           // Handle error appropriately
         }
       };
@@ -79,16 +80,28 @@ const HoroscopePage = () => {
     
 
     useEffect(() => {
-        if (artists.length > 0 && genres.length > 0 && !hasError) {
+        if (artists.length > 0 && genres.length > 0 && !apiCall) {
           generateHoroscope();
-          
         }
       }, [artists, genres]);
 
       useEffect(() => {
         if (generatedText) {
-          setGeneratedSign(generatedText.match(/Sign:\s*\[(.*?)\]/)[1]);
-          setGeneratedList(generatedText.split('.\n').slice(1).filter(reason => reason.trim() !== ''));
+            const colonIndex = generatedText.indexOf(':');
+            const signEndIndex = generatedText.indexOf(".");
+            if (colonIndex !== -1) {
+              const substring = generatedText.substring(colonIndex + 1, signEndIndex).trim();
+              const sign = substring.split(' ')[0];
+              setGeneratedSign(sign);
+            }
+            else{
+                const sign = 'fake sign debug'
+                setGeneratedSign(sign);
+            }
+            const reasonsStartIndex = generatedText.indexOf("1.");
+            const reasonsString = generatedText.substring(reasonsStartIndex);
+            const reasons = reasonsString.split("\n").map(reason => reason.trim()).filter(reason => reason !== "" );
+            setGeneratedList(reasons);
         }
       }, [generatedText]);
 
@@ -96,30 +109,41 @@ const HoroscopePage = () => {
       return (
         <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
           <Head>
-            <title>We'll guess your horoscope</title>
+            <title>Horoscope Guesser</title>
           </Head>
-
+      
           <main className="text-center">
-            <div className="text-4xl font-bold">Horoscope Page</div>
-            {generatedText && (
-              <div className="mt-4">
-                <p className="text-2xl font-bold">Our Guess:</p>
-                <div className="text-3xl font-semibold">{generatedSign}</div>
-                {generatedList.length > 0 && (
-                  <div className="mt-4">
-                    <p className="text-2xl font-bold">Reasons:</p>
-                    <ul className="list-disc list-inside">
-                      {generatedList.map((reason, index) => (
-                        <li key={index} className="text-lg">{reason}</li>
-                      ))}
-                    </ul>
-                  </div>
+            <div className="text-4xl font-bold">
+                {generatedText ? (
+                <span></span>
+                ) : (
+                <span>Analyzing your music taste to determine your zodiac sign...</span>
                 )}
-              </div>
+            </div>
+            {generatedText && (
+                <div className="mt-4">
+                <p className="text-2xl font-bold">Our Guess:</p>
+                <div className="bg-purple-500 rounded-lg p-4 mt-2 inline-block">
+                    <h1 className="text-3xl font-semibold text-white">{generatedSign}</h1>
+                </div>
+                {generatedList.length > 0 && (
+                    <div className="mt-4">
+                    <p className="text-2xl font-bold">Reasons:</p>
+                    <div className="bg-blue-800 p-4 rounded-lg mt-2 inline-block">
+                        <ul className="list-none">
+                        {generatedList.map((reason, index) => (
+                            <li key={index} className="text-lg text-left text-white">{reason}</li>
+                        ))}
+                        </ul>
+                    </div>
+                    </div>
+                )}
+                </div>
             )}
-          </main>
-        </div>
+            </main>
+     </div>
       );
+      
   };
   
   export default HoroscopePage;
