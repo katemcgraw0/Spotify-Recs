@@ -29,19 +29,18 @@ export default function Home() {
             <p className="mb-4">Signed in as {session.user.name}. You can now do any of the following.</p>
             
             <div className="flex flex-col space-y-4">
-              <Link legacyBehavior href="/horoscope">
-                <a className="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">Guess Your Horoscope</a>
-              </Link>
-              
-              <Link legacyBehavior href="/artists">
-                <a className="text-white bg-purple-500 hover:bg-purple-600 font-bold text-lg py-3 px-6 rounded">
-                  View Favorite Artists
-                </a>
-              </Link>
-              
-              <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" onClick={signOut}>
+            <Link legacyBehavior href="/horoscope">
+                <a className="common-button-style bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">Zodiacify</a>
+            </Link>
+
+            <Link legacyBehavior href="/artists">
+                <a className="common-button-style bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">View Favorite Artists</a>
+            </Link>
+
+            <button className="common-button-style bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" onClick={signOut}>
                 Sign out
-              </button>
+            </button>
+            
             </div>
           </div>
         )}
