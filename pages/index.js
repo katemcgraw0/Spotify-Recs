@@ -13,11 +13,15 @@ export default function Home() {
       </Head>
   
       <main className="text-center">
-        <h1 className="text-3xl font-bold mb-4">my spotify app</h1>
+        <h1 className="text-3xl font-bold mb-4">
+        <img src="/pinkspotify.png" alt="Zodiacify Logo" className="inline-block h-8 mr-2" />
+          Zodiacify</h1>
+       
   
         {!session && (
           <div>
-            <p className="mb-4">Not signed in</p>
+            <h1 className="text-2xl  mb-4">Login with Spotify and we will guess your zodiac sign based on your music taste.</h1>
+            
             <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" onClick={signIn}>
               Sign in
             </button>
@@ -40,7 +44,7 @@ export default function Home() {
             <button className="common-button-style bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" onClick={signOut}>
                 Sign out
             </button>
-            
+
             </div>
           </div>
         )}

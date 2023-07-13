@@ -8,11 +8,9 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-config();
 export default async function(req, res) {
-    console.log(req.body)
-    const {prompt} = req.body;
-  console.log(configuration.apiKey)  
+    
+  const {prompt} = req.body;
   if (!configuration.apiKey) {
     res.status(500).json({
       error: {
@@ -30,9 +28,9 @@ export default async function(req, res) {
       max_tokens: 100,
     });
     console.log(`request cost: ${completion.data.usage.total_tokens} tokens`);
-    console.log(completion)
+    
     res.status(200).json({ result: completion.data.choices[0].text });
-    return completion.data.choices[0].text
+    
   } 
   
   catch (error) {

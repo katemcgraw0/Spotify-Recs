@@ -13,31 +13,10 @@ const HoroscopePage = () => {
     const [generatedText, setGeneratedText] = useState('');
     const [generatedSign, setGeneratedSign] = useState('');
     const [generatedList, setGeneratedList] = useState('');
-    let apiCall = false;
-    
-    const generateHoroscope = async () => {
-        try {
-          const prompt = makePrompt(artists.map((artist) => artist.name), genres);
-          const response = await fetch('/api/openai', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ prompt }),
-          });
-          apiCall = true;
-          const data = await response.json();
-          setGeneratedText(data.result);
-          console.log(generatedText)
+    const [horoscopeGenerated, setHoroscopeGenerated] = useState(false);
 
-        } 
-        catch (error) {
-          console.error('Error generating horoscope:', error);
 
-          // Handle error appropriately
-        }
-      };
-
+  
     
     useEffect(() => {
 
@@ -58,12 +37,8 @@ const HoroscopePage = () => {
           });
           const artistsData = artistsResponse.data.items;
   
-          const genresResponse = await axios.get('https://api.spotify.com/v1/me/top/artists', {
-            headers: {
-              'Authorization': `Bearer ${session.accessToken}`,
-            },
-          });
-          const genresData = genresResponse.data.items.reduce((allGenres, artist) => {
+          
+          const genresData = artistsResponse.data.items.reduce((allGenres, artist) => {
             return [...allGenres, ...artist.genres];
           }, []);
   
@@ -76,36 +51,62 @@ const HoroscopePage = () => {
           // Handle error appropriately
         }
       };
-  
-      getFavoriteArtists();
+      
+      if(genres.length == 0 && artists.length == 0){
+        getFavoriteArtists();
+      }
+      
     }, []);
     
 
     useEffect(() => {
-        if (artists.length > 0 && genres.length > 0 && !apiCall) {
+        const generateHoroscope = async () => {
+            
+            console.log('generatingHoroscope...')
+            try {
+              const prompt = makePrompt(artists.map((artist) => artist.name), genres);
+              const response = await fetch('/api/openai', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt }),
+              });
+              setHoroscopeGenerated(true);
+              const data = await response.json();
+    
+              const colonIndex = data.result.indexOf(':');
+              const signEndIndex = data.result.indexOf('.');
+              if (colonIndex !== -1) {
+                const substring = data.result.substring(colonIndex + 1, signEndIndex).trim();
+                const sign = substring.split(' ')[0];
+                setGeneratedSign(sign);
+              } else {
+                const sign = 'fake sign debug';
+                setGeneratedSign(sign);
+              }
+        
+              const reasonsStartIndex = data.result.indexOf('1.');
+              const reasonsString = data.result.substring(reasonsStartIndex);
+              const reasons = reasonsString.split('\n').map((reason) => reason.trim()).filter((reason) => reason !== '');
+              setGeneratedList(reasons);
+        
+              setHoroscopeGenerated(true);
+            } 
+            catch (error) {
+              console.error('Error generating horoscope:', error);
+    
+              // Handle error appropriately
+            }
+        
+          };
+    
+        if (artists.length > 0 && genres.length > 0 && !horoscopeGenerated && generatedSign == '') {
           generateHoroscope();
         }
-      }, [artists, genres]);
+      }, [genres, artists]);
 
-      useEffect(() => {
-        if (generatedText) {
-            const colonIndex = generatedText.indexOf(':');
-            const signEndIndex = generatedText.indexOf(".");
-            if (colonIndex !== -1) {
-              const substring = generatedText.substring(colonIndex + 1, signEndIndex).trim();
-              const sign = substring.split(' ')[0];
-              setGeneratedSign(sign);
-            }
-            else{
-                const sign = 'fake sign debug'
-                setGeneratedSign(sign);
-            }
-            const reasonsStartIndex = generatedText.indexOf("1.");
-            const reasonsString = generatedText.substring(reasonsStartIndex);
-            const reasons = reasonsString.split("\n").map(reason => reason.trim()).filter(reason => reason !== "" );
-            setGeneratedList(reasons);
-        }
-      }, [generatedText]);
+
 
 
       return (
@@ -122,7 +123,7 @@ const HoroscopePage = () => {
                 <span>Analyzing your music taste to determine your zodiac sign...</span>
                 )}
             </div>
-            {generatedText && (
+            {generatedSign && (
                 <div className="mt-4">
                 <p className="text-2xl font-bold">Our Guess:</p>
                 <div className="bg-purple-500 rounded-lg p-4 mt-2 inline-block">
@@ -156,5 +157,5 @@ const HoroscopePage = () => {
       );
       
   };
-  
+
   export default HoroscopePage;
