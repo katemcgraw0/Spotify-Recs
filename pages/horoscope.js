@@ -5,7 +5,7 @@ import Head from 'next/head';
 import {makePrompt} from '/lib/makePrompt.js'
 import Link from 'next/link';
 
-let apiCall = false;
+
 
 const HoroscopePage = () => {
     const [artists, setArtists] = useState([]);
@@ -13,7 +13,8 @@ const HoroscopePage = () => {
     const [generatedText, setGeneratedText] = useState('');
     const [generatedSign, setGeneratedSign] = useState('');
     const [generatedList, setGeneratedList] = useState('');
-
+    let apiCall = false;
+    
     const generateHoroscope = async () => {
         try {
           const prompt = makePrompt(artists.map((artist) => artist.name), genres);
