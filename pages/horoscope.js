@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
 import Head from 'next/head';
@@ -10,101 +10,113 @@ import Link from 'next/link';
 const HoroscopePage = () => {
     const [artists, setArtists] = useState([]);
     const [genres, setGenres] = useState([]);
-    const [generatedText, setGeneratedText] = useState('');
     const [generatedSign, setGeneratedSign] = useState('');
     const [generatedList, setGeneratedList] = useState('');
     const [horoscopeGenerated, setHoroscopeGenerated] = useState(false);
-
+    let generatingFuncCalled = useRef(false);
 
   
     
     useEffect(() => {
-
-      const getFavoriteArtists = async () => {
-        const session = await getSession();
-        const accessToken = session?.accessToken;
-  
-        if (!accessToken) {
-          // Handle case when access token is not available
-          return;
-        }
-  
-        try {
-          const artistsResponse = await axios.get('https://api.spotify.com/v1/me/top/artists', {
-            headers: {
-              'Authorization': `Bearer ${session.accessToken}`,
-            },
-          });
-          const artistsData = artistsResponse.data.items;
-  
-          
-          const genresData = artistsResponse.data.items.reduce((allGenres, artist) => {
-            return [...allGenres, ...artist.genres];
-          }, []);
-  
-          setArtists(artistsData);
-          setGenres(genresData);
-          
-
-        } catch (error) {
-          console.error('Error retrieving favorite artists and genres:', error);
-          // Handle error appropriately
-        }
-      };
-      
-      if(genres.length == 0 && artists.length == 0){
-        getFavoriteArtists();
-      }
-      
-    }, []);
+        const fetchData = async () => {
+          const session = await getSession();
+          const accessToken = session?.accessToken;
     
-
-    useEffect(() => {
-        const generateHoroscope = async () => {
-            
-            console.log('generatingHoroscope...')
-            try {
-              const prompt = makePrompt(artists.map((artist) => artist.name), genres);
-              const response = await fetch('/api/openai', {
-                method: 'POST',
+          if (!accessToken) {
+            // Handle case when access token is not available
+            return;
+          }
+    
+          try {
+            const artistsResponse = await axios.get(
+              'https://api.spotify.com/v1/me/top/artists',
+              {
                 headers: {
-                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${session.accessToken}`,
                 },
-                body: JSON.stringify({ prompt }),
-              });
-              setHoroscopeGenerated(true);
-              const data = await response.json();
-    
-              const colonIndex = data.result.indexOf(':');
-              const signEndIndex = data.result.indexOf('.');
-              if (colonIndex !== -1) {
-                const substring = data.result.substring(colonIndex + 1, signEndIndex).trim();
-                const sign = substring.split(' ')[0];
-                setGeneratedSign(sign);
-              } else {
-                const sign = 'fake sign debug';
-                setGeneratedSign(sign);
               }
-        
-              const reasonsStartIndex = data.result.indexOf('1.');
-              const reasonsString = data.result.substring(reasonsStartIndex);
-              const reasons = reasonsString.split('\n').map((reason) => reason.trim()).filter((reason) => reason !== '');
-              setGeneratedList(reasons);
-        
-              setHoroscopeGenerated(true);
-            } 
-            catch (error) {
-              console.error('Error generating horoscope:', error);
+            );
+            const artistsData = artistsResponse.data.items;
     
-              // Handle error appropriately
-            }
-        
-          };
+            const genresData = artistsResponse.data.items.reduce(
+              (allGenres, artist) => {
+                return [...allGenres, ...artist.genres];
+              },
+              []
+            );
     
-        if (artists.length > 0 && genres.length > 0 && !horoscopeGenerated && generatedSign == '') {
-          generateHoroscope();
+            setArtists(artistsData);
+            setGenres(genresData);
+          } catch (error) {
+            console.error('Error retrieving favorite artists and genres:', error);
+            // Handle error appropriately
+          }
+        };
+    
+        if (genres.length === 0 && artists.length === 0) {
+          fetchData();
         }
-      }, [genres, artists]);
+      }, []);
+    
+      
+      useEffect(() => {
+        
+        const generateHoroscope = async () => {
+
+           
+
+          console.log('generatingHoroscope...');
+          try {
+            const prompt = makePrompt(
+              artists.map((artist) => artist.name),
+              genres
+            );
+            const response = await fetch('/api/openai', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ prompt }),
+            });
+            setHoroscopeGenerated(true);
+            const data = await response.json();
+    
+            const colonIndex = data.result.indexOf(':');
+            const signEndIndex = data.result.indexOf('.');
+            if (colonIndex !== -1) {
+              const substring = data.result.substring(
+                colonIndex + 1,
+                signEndIndex
+              ).trim();
+              const sign = substring.split(' ')[0];
+              setGeneratedSign(sign);
+            } else {
+              const sign = 'fake sign debug';
+              setGeneratedSign(sign);
+            }
+    
+            const reasonsStartIndex = data.result.indexOf('1.');
+            const reasonsString = data.result.substring(reasonsStartIndex);
+            const reasons = reasonsString
+              .split('\n')
+              .map((reason) => reason.trim())
+              .filter((reason) => reason !== '');
+            setGeneratedList(reasons);
+    
+            setHoroscopeGenerated(true);
+          } catch (error) {
+            console.error('Error generating horoscope:', error);
+            // Handle error appropriately
+          }
+        };
+    
+        if (artists.length > 0 && genres.length > 0 &&!horoscopeGenerated &&generatedSign === '') {
+            if (!generatingFuncCalled.current) { // access the current value of the ref using .current
+                generatingFuncCalled.current = true;
+                generateHoroscope();
+            }
+        }
+      }, [genres]);
 
 
 
@@ -117,7 +129,7 @@ const HoroscopePage = () => {
       
           <main className="text-center">
             <div className="text-4xl font-bold">
-                {generatedText ? (
+                {generatedSign ? (
                 <span></span>
                 ) : (
                 <span>Analyzing your music taste to determine your zodiac sign...</span>
