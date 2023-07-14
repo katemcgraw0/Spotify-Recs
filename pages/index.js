@@ -34,7 +34,7 @@ export default function Home() {
             
             <div className="flex flex-col space-y-4">
             <Link legacyBehavior href="/horoscope">
-                <a className="common-button-style bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">Zodiacify</a>
+                <a className="common-button-style bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">Zodiacify: An App for Spotify.</a>
             </Link>
 
             <Link legacyBehavior href="/artists">
