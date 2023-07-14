@@ -41,13 +41,13 @@ const ArtistsPage = () => {
       </Head>
   
       <main className="text-center">
-        <h1 className="text-4xl font-bold mb-10 ">Your Favorite Artists Lately</h1>
+        <h1 className="text-4xl font-bold mb-10 text-black">Your Favorite Artists Lately</h1>
   
         {artists.length > 0 ? (
           <div className="flex flex-wrap justify-center gap-4">
             {artists.map((artist) => (
               <div key={artist.id} className="flex flex-col items-center">
-                <p className="text-2xl font-bold mb-2">{artist.name}</p>
+                <p className="text-2xl text-black font-bold mb-2">{artist.name}</p>
                 <img src={artist.images[0].url} alt={artist.name} width={300} height={300} className="mx-auto" />
               </div>
             ))}
