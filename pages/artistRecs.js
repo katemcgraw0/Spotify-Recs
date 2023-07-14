@@ -4,6 +4,12 @@ import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
 
+
+/* TODO:
+-fetch users top artists
+-ask open ai for 5 artist recs based on this
+-search for spotify artist ID with spotify search api
+-display artist and image of artist*/
 const artistRecs = () => {
    
     return (
