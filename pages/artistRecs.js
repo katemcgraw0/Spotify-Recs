@@ -136,7 +136,7 @@ const artistRecs = () => {
 
 
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
+      <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 text-black ">
       <Head>
         <title>Recommendations</title>
       </Head>
@@ -151,7 +151,7 @@ const artistRecs = () => {
         </div>
        
         {artistPic.length > 0 && artistPic.length === artistRecs.length && (
-  <div className="flex flex-col items-center justify-center">
+  <div className="flex flex-col items-center justify-center text-black ">
     <h2 className="text-2xl font-bold text-center mb-4">
       You should check out these artists!
     </h2>
