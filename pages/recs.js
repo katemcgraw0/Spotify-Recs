@@ -15,18 +15,18 @@ const recsPage = () => {
           <title>Recommendations</title>
         </Head>
     
-        <main className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <main className="flex flex-col items-center justify-center h-screen bg-gray-100 text-black text-center">
       <h1 className="text-3xl font-bold mb-8">Get Custom Recommendations Based on Your Music Taste</h1>
 
       <div className="flex flex-col gap-4">
         <Link legacyBehavior href="/artistRecs">
-          <a className="bg-fuchsia-400 hover:bg-fuchsia-500 text-white py-2 px-4 rounded-lg transition-colors duration-300">
+          <a className="bg-fuchsia-500 hover:bg-fuchsia-600 text-white py-2 px-4 rounded-lg transition-colors duration-300">
             Get Artist Recommendations
           </a>
         </Link>
 
         <Link legacyBehavior href="/songRecs">
-          <a className="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded-lg transition-colors duration-300">
+          <a className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition-colors duration-300">
             Get Song Recommendations
           </a>
         </Link>
