@@ -13,14 +13,14 @@ export default function Home() {
       </Head>
   
       <main className="text-center">
-        <h1 className="text-3xl font-bold mb-4">
-        <img src="/pinkspotify.png" alt="Zodiacify Logo" className="inline-block h-8 mr-2" />
+        <h1 className="text-3xl font-bold mb-4 font-custom">
+        <img src="/pinkspotify.png" alt="Zodiacify Logo" className="inline-block h-8 mr-2 " />
           Zodiacify</h1>
        
   
         {!session && (
           <div>
-            <h1 className="text-2xl  mb-4">Login with Spotify and we will guess your zodiac sign based on your music taste.</h1>
+            <h1 className="text-2xl  mb-4 font-custom">Login with Spotify and we will guess your zodiac sign based on your music taste.</h1>
             
             <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" onClick={signIn}>
               Sign in
@@ -39,6 +39,10 @@ export default function Home() {
 
             <Link legacyBehavior href="/artists">
                 <a className="common-button-style bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">View Favorite Artists</a>
+            </Link>
+
+            <Link legacyBehavior href="/recs">
+                <a className="common-button-style bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded">Get Music Recommendations</a>
             </Link>
 
             <button className="common-button-style bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" onClick={signOut}>

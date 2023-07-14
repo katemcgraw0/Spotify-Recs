@@ -7,49 +7,31 @@ import Link from 'next/link';
 
 
 
-const ArtistsPage = () => {
-    const [artists, setArtists] = useState([]);
-  
-    useEffect(() => {
-      const getFavoriteArtists = async () => {
-        const session = await getSession();
-        const accessToken = session?.accessToken;
-  
-        if (!accessToken) {
-          // Handle case when access token is not available
-          return;
-        }
-  
-        try {
-          const response = await axios.get('https://api.spotify.com/v1/me/top/artists', {
-            headers: {
-              'Authorization': `Bearer ${session.accessToken}`,
-            },
-          });
-  
-          const { items } = response.data;
-          setArtists(items);
-        } catch (error) {
-          console.error('Error retrieving favorite artists:', error);
-          // Handle error appropriately
-        }
-      };
-  
-      getFavoriteArtists();
-    }, []);
-  
+const recsPage = () => {
+   
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
         <Head>
-          <title>Spotify Favorites App - Recommendations</title>
+          <title>Recommendations</title>
         </Head>
     
-        <main>
+        <main className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <h1 className="text-3xl font-bold mb-8">Get Custom Recommendations Based on Your Music Taste</h1>
 
+      <div className="flex flex-col gap-4">
+        <Link legacyBehavior href="/artistRecs">
+          <a className="bg-fuchsia-400 hover:bg-fuchsia-500 text-white py-2 px-4 rounded-lg transition-colors duration-300">
+            Get Artist Recommendations
+          </a>
+        </Link>
 
-
-            
-        </main>
+        <Link legacyBehavior href="/songRecs">
+          <a className="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded-lg transition-colors duration-300">
+            Get Song Recommendations
+          </a>
+        </Link>
+      </div>
+    </main>
 
 
 
@@ -65,4 +47,4 @@ const ArtistsPage = () => {
       </div>
     );
   };
-  export default ArtistsPage;
+  export default recsPage;
