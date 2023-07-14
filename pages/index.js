@@ -15,7 +15,7 @@ export default function Home() {
       <main className="text-center">
         <h1 className="text-3xl font-bold mb-4 font-custom text-black">
         <img src="/pinkspotify.png" alt="Zodiacify Logo" className="inline-block h-8 mr-2 " />
-          Zodiacify</h1>
+          Zodiacify: An App for Spotify.</h1>
        
   
         {!session && (
@@ -34,7 +34,7 @@ export default function Home() {
             
             <div className="flex flex-col space-y-4">
             <Link legacyBehavior href="/horoscope">
-                <a className="common-button-style bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">Zodiacify: An App for Spotify.</a>
+                <a className="common-button-style bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">Zodiacify</a>
             </Link>
 
             <Link legacyBehavior href="/artists">
