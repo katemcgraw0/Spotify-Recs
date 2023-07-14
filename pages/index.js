@@ -8,13 +8,13 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
       <Head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/zodicify.ico" sizes="any" />
         <title>Zodiacify</title>
       </Head>
   
       <main className="text-center">
         <h1 className="text-3xl font-bold mb-4 font-custom text-black">
-        <img src="/pinkspotify.png" alt="Zodiacify Logo" className="inline-block h-8 mr-2 " />
+        <img src="/zodiacify.png" alt="Zodiacify Logo" className="inline-block h-10 mr-2 " />
           Zodiacify: An App for Spotify.</h1>
        
   

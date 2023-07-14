@@ -4,7 +4,7 @@ Welcome to the Zodiac Sign Guesser website! This web application is designed to 
 
 ## How It Works
 
-1. Visit the website: [Zodiacify](https://zodiacify.vercel.app/)
+1. Visit the website: [Zodiacify](https://zodiacify.vercel.app/){:target="_blank"}
 
 2. Login to your spotify account.
 
