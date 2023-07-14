@@ -128,7 +128,7 @@ const HoroscopePage = () => {
           </Head>
       
           <main className="text-center">
-            <div className="text-4xl font-bold">
+            <div className="text-4xl font-bold text-black">
                 {generatedSign ? (
                 <span></span>
                 ) : (
@@ -137,13 +137,13 @@ const HoroscopePage = () => {
             </div>
             {generatedSign && (
                 <div className="mt-4">
-                <p className="text-2xl font-bold">Our Guess:</p>
+                <p className="text-2xl text-black font-bold">Our Guess:</p>
                 <div className="bg-purple-500 rounded-lg p-4 mt-2 inline-block">
                     <h1 className="text-3xl font-semibold text-white">{generatedSign}</h1>
                 </div>
                 {generatedList.length > 0 && (
                     <div className="mt-4">
-                    <p className="text-2xl font-bold">Reasons:</p>
+                    <p className="text-2xl text-black font-bold">Reasons:</p>
                     <div className="bg-blue-800 p-4 rounded-lg mt-2 inline-block">
                         <ul className="list-none">
                         {generatedList.map((reason, index) => (
