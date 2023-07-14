@@ -14,7 +14,9 @@ const artistRecs = () => {
   const [artists, setArtists] = useState([]);
   const [recs, setRecs] = useState('');
   let generatingFuncCalled = useRef(false);
-
+  const [artistRecs, setArtistRecs] = useState([]);
+ 
+  const [artistPic, setArtistPic] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const session = await getSession();
@@ -54,9 +56,6 @@ const artistRecs = () => {
   useEffect(() => {
         
     const generateRecs = async () => {
-
-       
-
       console.log('generatingRecs...');
       try {
         const prompt = makePromptArtistRecs(
@@ -71,15 +70,18 @@ const artistRecs = () => {
         });
         const data = await response.json();
         setRecs(data.result);
-        
+        // Split the string based on the delimiter "."
+        const artistItems = data.result.split(".");
 
-
+      // Initialize an array to store the artists
+        const artistRecsArray = data.result.split(/\d+\./).filter(item => item.trim() !== '').map(item => item.replace(/\n/g, '').trim());
+        setArtistRecs(artistRecsArray)
+        console.log(artistRecs);
       } catch (error) {
         console.error('Error generating recommendations:', error);
         // Handle error appropriately
       }
     };
-
 
     if (artists.length > 0  &&recs === '') {
         if (!generatingFuncCalled.current) { // access the current value of the ref using .current
@@ -91,31 +93,83 @@ const artistRecs = () => {
 
 
 
+  useEffect(() => {
+    const getArtistImages = async () => {
+      console.log('gettingArtistsImages...');
+      const session = await getSession();
+      const artistPicsArray = [];
+
+      for (const artistName of artistRecs) {
+        const searchResponse = await axios.get('https://api.spotify.com/v1/search', {
+          params: {
+            q: artistName,
+            type: 'artist',
+          },
+          headers: {
+            Authorization: `Bearer ${session.accessToken}`,
+          },
+    });
+
+        const { artists } = searchResponse.data;
+
+        if (artists.items.length > 0 && artists.items[0].images.length > 0) {
+          const artistPicURL = artists.items[0].images[0].url;
+          artistPicsArray.push(artistPicURL);
+        }
+      }
+
+
+      
+      setArtistPic(artistPicsArray);
+
+
+    }
+
+    if (!artistRecs.length == 0){
+      console.log('artist recs here')
+      console.log(artistRecs)
+      
+      getArtistImages();
+
+    }
+  }, [artistRecs]);
+
 
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
-        <Head>
-          <title>Recommendations</title>
-        </Head>
-    
-        <main className="flex flex-col items-center justify-center h-screen bg-gray-100">
-          <div className="text-4xl font-bold text-black">
-            {recs ? (
+      <Head>
+        <title>Recommendations</title>
+      </Head>
+  
+      <main className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <div className="text-4xl font-bold text-black text-center">
+          {recs ? (
             <span></span>
-            ) : (
+          ) : (
             <span>Getting artist recommendations...</span>
-            )}
+          )}
         </div>
-        {recs && (
-            <div className="mt-4">
-            <p className="text-2xl text-black font-bold">Our Recommendations:</p>
-            <div className="bg-purple-500 rounded-lg p-4 mt-2 inline-block">
-                <h1 className="text-3xl font-semibold text-white">{recs}</h1>
-            </div>
-            </div>
-                  )}
-        </main>
-
+       
+        {artistPic.length > 0 && artistPic.length === artistRecs.length && (
+  <div className="flex flex-col items-center justify-center">
+    <h2 className="text-2xl font-bold text-center mb-4">
+      You should check out these artists!
+    </h2>
+    <div className="grid grid-cols-2 gap-4">
+      {artistPic.map((url, index) => (
+        <div key={index} className="flex flex-col items-center">
+          <img
+            src={url}
+            alt={`Artist ${index + 1}`}
+            className="w-48 h-48 rounded-full mb-2"
+          />
+          <p className="text-lg text-center">{artistRecs[index]}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+      </main>
 
 
         <footer className="fixed bottom-0 left-0 right-0 bg-gray-200 py-2">
