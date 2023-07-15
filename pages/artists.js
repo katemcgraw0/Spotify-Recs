@@ -37,7 +37,7 @@ const ArtistsPage = () => {
     getFavoriteArtists();
   }, []);
 
-  
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
       <Head>
@@ -50,7 +50,7 @@ const ArtistsPage = () => {
         {artists.length > 0 ? (
           <div className="flex flex-wrap justify-center gap-4">
             {artists.map((artist) => (
-              <div key={artist.id} className="flex flex-col items-center">
+              <div key={artist.id} className="flex flex-col items-center mb-5">
                 <p className="text-2xl text-black font-bold mb-2">{artist.name}</p>
                 <img src={artist.images[0].url} alt={artist.name} width={300} height={300} className="mx-auto" />
               </div>
