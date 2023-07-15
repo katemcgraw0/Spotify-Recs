@@ -7,7 +7,10 @@ import Link from 'next/link';
 const ArtistsPage = () => {
   const [artists, setArtists] = useState([]);
 
+
+  //gets users favorite artists and sets artists ^ to them
   useEffect(() => {
+
     const getFavoriteArtists = async () => {
       const session = await getSession();
       const accessToken = session?.accessToken;
@@ -34,6 +37,7 @@ const ArtistsPage = () => {
     getFavoriteArtists();
   }, []);
 
+  
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
       <Head>

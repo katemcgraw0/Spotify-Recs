@@ -11,12 +11,19 @@ import { makePromptArtistRecs } from '@/lib/makePrompt';
 -search for spotify artist ID with spotify search api
 -display artist and image of artist*/
 const artistRecs = () => {
+  //users favorite artists:
   const [artists, setArtists] = useState([]);
+  //string of recommendations from open ai api call
   const [recs, setRecs] = useState('');
+  //set to true once open ai api called to make sure it only happens once
   let generatingFuncCalled = useRef(false);
+  //artist recs in an array of artists:
   const [artistRecs, setArtistRecs] = useState([]);
- 
+ //array of artist picture urls w same index as artistRecs
   const [artistPic, setArtistPic] = useState([]);
+
+
+  //Gets Users favorite artists:
   useEffect(() => {
     const fetchData = async () => {
       const session = await getSession();
@@ -53,8 +60,8 @@ const artistRecs = () => {
 
 
 
-  useEffect(() => {
-        
+  //Gets artist recommendations for user:
+  useEffect(() => {   
     const generateRecs = async () => {
       console.log('generatingRecs...');
       try {
@@ -92,7 +99,7 @@ const artistRecs = () => {
   }, [artists]);
 
 
-
+//Gets Image of artist recs
   useEffect(() => {
     const getArtistImages = async () => {
       console.log('gettingArtistsImages...');
@@ -117,12 +124,7 @@ const artistRecs = () => {
           artistPicsArray.push(artistPicURL);
         }
       }
-
-
-      
       setArtistPic(artistPicsArray);
-
-
     }
 
     if (!artistRecs.length == 0){
@@ -133,6 +135,7 @@ const artistRecs = () => {
 
     }
   }, [artistRecs]);
+
 
 
     return (
@@ -151,24 +154,24 @@ const artistRecs = () => {
         </div>
        
         {artistPic.length > 0 && artistPic.length === artistRecs.length && (
-  <div className="flex flex-col items-center justify-center text-black ">
-    <h2 className="text-2xl font-bold text-center mb-4">
-      You should check out these artists!
-    </h2>
-    <div className="grid grid-cols-2 gap-4">
-      {artistPic.map((url, index) => (
-        <div key={index} className="flex flex-col items-center">
-          <img
-            src={url}
-            alt={`Artist ${index + 1}`}
-            className="w-48 h-48 rounded-full mb-2"
-          />
-          <p className="text-lg text-center">{artistRecs[index]}</p>
+        <div className="flex flex-col items-center justify-center text-black ">
+          <h2 className="text-2xl font-bold text-center mb-4">
+            You should check out these artists!
+          </h2>
+          <div className="grid grid-cols-2 gap-4">
+            {artistPic.map((url, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <img
+                  src={url}
+                  alt={`Artist ${index + 1}`}
+                  className="w-48 h-48 rounded-full mb-2"
+                />
+                <p className="text-lg text-center">{artistRecs[index]}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-)}
+      )}
       </main>
 
 

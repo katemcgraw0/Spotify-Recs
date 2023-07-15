@@ -8,7 +8,53 @@ import { makePromptSongRecs } from '@/lib/makePrompt';
 
 
 const songRecs = () => {
-   
+    const [genres, setGenres] = useState([]);
+    const [artists, setArtists] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          const session = await getSession();
+          const accessToken = session?.accessToken;
+    
+          if (!accessToken) {
+            // Handle case when access token is not available
+            return;
+          }
+          try {
+            const artistsResponse = await axios.get(
+              'https://api.spotify.com/v1/me/top/artists',
+              {
+                headers: {
+                  Authorization: `Bearer ${session.accessToken}`,
+                },
+              }
+            );
+            const artistsData = artistsResponse.data.items;
+    
+            const genresData = artistsResponse.data.items.reduce(
+              (allGenres, artist) => {
+                return [...allGenres, ...artist.genres];
+              },
+              []
+            );
+            setArtists(artistsData);
+            setGenres(genresData);
+          } catch (error) {
+            console.error('Error retrieving favorite artists and genres:', error);
+            // Handle error appropriately
+          }
+        };
+    
+        if (genres.length === 0 && artists.length === 0) {
+          fetchData();
+        }
+      }, []);
+
+
+
+
+
+
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
         <Head>
