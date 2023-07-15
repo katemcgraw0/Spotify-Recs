@@ -156,7 +156,7 @@ const artistRecs = () => {
         {artistPic.length > 0 && artistPic.length === artistRecs.length && (
         <div className="flex flex-col items-center justify-center text-black ">
           <h2 className="text-2xl font-bold text-center mb-4">
-            You should check out these artists!
+            You should check out these artists on Spotify!
           </h2>
           <div className="grid grid-cols-2 gap-4">
             {artistPic.map((url, index) => (

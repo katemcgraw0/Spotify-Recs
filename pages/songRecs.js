@@ -15,6 +15,8 @@ const SongRecs = () => {
   const [albumCovers, setAlbumCovers] = useState([]);
 
   useEffect(() => {
+    
+    //fetches users top artists on spotify
     const fetchData = async () => {
       const session = await getSession();
       const accessToken = session?.accessToken;
@@ -54,6 +56,7 @@ const SongRecs = () => {
   }, []);
 
   useEffect(() => {
+    //generates song recommendations by making open ai api call
     const generateRecs = async () => {
       console.log('generatingRecs...');
       try {
@@ -98,6 +101,8 @@ const SongRecs = () => {
   }, [artists]);
 
   useEffect(() => {
+
+    //gets the album covers by spotify api call
     const getAlbumImages = async () => {
       console.log('gettingArtistsImages...');
       const session = await getSession();
@@ -158,7 +163,7 @@ const SongRecs = () => {
         {albumCovers.length > 0 && (
           <div className="flex flex-col items-center justify-center text-black">
             <h2 className="text-2xl font-bold text-center mb-12">
-              You Should Check out These Songs!
+              You Should Check out These Songs on Spotify!
             </h2>
             <div className="grid grid-cols-2 gap-4">
               {albumCovers.map((cover, index) => (
@@ -166,7 +171,7 @@ const SongRecs = () => {
                   <img
                     src={cover.artistPicURL}
                     alt={`${cover.songName} - ${cover.artistName}`}
-                    className="w-48 h-48 rounded-full mb-2"
+                    className="w-48 h-48 mb-2"
                   />
                   <p className="text-lg text-center">
                     {cover.songName} by {cover.artistName}
