@@ -3,13 +3,10 @@ import axios from 'axios';
 import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import {makePrompt} from '/lib/makePrompt.js'
 import { makePromptArtistRecs } from '@/lib/makePrompt';
 /* TODO:
--fetch users top artists
--ask open ai for 5 artist recs based on this
--search for spotify artist ID with spotify search api
--display artist and image of artist*/
+-get spotify link to artist
+-link artist image to their spotify page*/
 const artistRecs = () => {
   //users favorite artists:
   const [artists, setArtists] = useState([]);
@@ -21,7 +18,8 @@ const artistRecs = () => {
   const [artistRecs, setArtistRecs] = useState([]);
  //array of artist picture urls w same index as artistRecs
   const [artistPic, setArtistPic] = useState([]);
-
+//array of link to artists' spotify profiles:
+  const [artistSpotify,setArtistSpotify] = useState([]);
 
   //Gets Users favorite artists:
   useEffect(() => {
@@ -105,7 +103,7 @@ const artistRecs = () => {
       console.log('gettingArtistsImages...');
       const session = await getSession();
       const artistPicsArray = [];
-
+      const artistSpotArray = [];
       for (const artistName of artistRecs) {
         const searchResponse = await axios.get('https://api.spotify.com/v1/search', {
           params: {
@@ -118,13 +116,16 @@ const artistRecs = () => {
     });
 
         const { artists } = searchResponse.data;
-
+        console.log(artists)
         if (artists.items.length > 0 && artists.items[0].images.length > 0) {
           const artistPicURL = artists.items[0].images[0].url;
+          const artistSpotifyLink = artists.items[0].external_urls.spotify
           artistPicsArray.push(artistPicURL);
+          artistSpotArray.push(artistSpotifyLink);
         }
       }
       setArtistPic(artistPicsArray);
+      setArtistSpotify(artistSpotArray);
     }
 
     if (!artistRecs.length == 0){
@@ -138,53 +139,47 @@ const artistRecs = () => {
 
 
 
-    return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 text-black ">
+  return (
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 text-black">
       <Head>
         <title>Recommendations</title>
       </Head>
   
       <main className="flex flex-col items-center justify-center h-screen bg-gray-100">
         <div className="text-4xl font-bold text-black text-center">
-          {recs ? (
-            <span></span>
-          ) : (
-            <span>Getting artist recommendations...</span>
-          )}
+          {recs ? <span></span> : <span>Getting artist recommendations...</span>}
         </div>
-       
+  
         {artistPic.length > 0 && artistPic.length === artistRecs.length && (
-        <div className="flex flex-col items-center justify-center text-black ">
-          <h2 className="text-2xl font-bold text-center mb-4">
-            You should check out these artists on Spotify!
-          </h2>
-          <div className="grid grid-cols-2 gap-4">
-            {artistPic.map((url, index) => (
-              <div key={index} className="flex flex-col items-center">
-                <img
-                  src={url}
-                  alt={`Artist ${index + 1}`}
-                  className="w-48 h-48 rounded-full mb-2"
-                />
-                <p className="text-lg text-center">{artistRecs[index]}</p>
-              </div>
-            ))}
+          <div className="flex flex-col items-center justify-center text-black">
+            <h2 className="text-2xl font-bold text-center mb-4">
+              You should check out these artists on Spotify!
+            </h2>
+            <div className="grid grid-cols-2 gap-4">
+              {artistPic.map((url, index) => (
+                <div key={index} className="flex flex-col items-center">
+                  <a href={artistSpotify[index]} target="_blank" rel="noopener noreferrer">
+                    {/* Anchor tag wrapping the img element */}
+                    <img src={url} alt={`Artist ${index + 1}`} className="w-48 h-48 mb-2" />
+                  </a>
+                  <p className="text-lg text-center">{artistRecs[index]}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </main>
-
-
-        <footer className="fixed bottom-0 left-0 right-0 bg-gray-200 py-2">
-                  <div className="flex justify-center">
-                      <Link legacyBehavior href="/">
-                      <a className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                          Return to Main Menu
-                      </a>
-                      </Link>
-                  </div>
-          </footer>
-      </div>
-    );
+  
+      <footer className="fixed bottom-0 left-0 right-0 bg-gray-200 py-2">
+        <div className="flex justify-center">
+          <Link legacyBehavior href="/">
+            <a className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Return to Main Menu
+            </a>
+          </Link>
+        </div>
+      </footer>
+    </div>
+  );
   };
   export default artistRecs;
