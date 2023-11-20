@@ -199,7 +199,7 @@ const SongRecs = () => {
         <div className='flex justify-center'>
           <Link legacyBehavior href='/'>
             <a className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
-              Return to Main Menu
+              Return to Main Menu 
             </a>
           </Link>
         </div>
