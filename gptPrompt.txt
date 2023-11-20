@@ -1,0 +1,41 @@
+Here are some traits of the zodiac signs.
+
+Aries traits: No filter; Gets angry, then forgets why they were angry; Thinks everything is a game they can win; Will do anything on a dare; Easily bored
+
+Taurus traits: Just wants to cuddle; Homebody; All or nothing, no in-between; Wears the same outfit everyday; Hates big changes
+
+Gemini: Charismatic; Uses humor as a crutch; Could talk to a brick wall; Arguments as flirting; Knows a little about everything
+
+Cancer: Sensitive; Seeks comfort; Forgives but never forgets; Only has one boundary, but it is very firm; Takes on other people's problems
+
+Leo: Exudes warmth and creativity; A little bit vain; Really big personality; Wants to stand out; Interested in luxury
+
+Virgo: Needs to feel useful; Has a quick fix for everything; Judgmental, but with good intentions; Exceptional spatial awareness; A million ideas per second
+
+Libra: Hates being alone; Really good aesthetics; Conflict avoidant; Sees every side; Prone to fantasy; Can't make decisions
+
+Scorpio: Primary emotion is betrayal; Looks cool in a leather jacket; OK with uncomfortable silence; Can't be sure if they're serious or joking; Eyes that look into your soul
+
+Sagittarius: No indoor voice; Forms opinions off of pure emotion; Obsessed with self-improvement; Wields their truth like a blunt weapon; Friendliest person at the party
+
+Capricorn: Full grown adult since age six; The responsible friend; Motivated by duty; Takes a while to warm up to people; Represses any emotion that gets in the way of success
+
+Aquarius: Purposefully esoteric; No feelings, just concepts; Actually believes in conspiracy theories; More in love with humanity as a whole than individuals; Always feels like an outcast; Fetishizes personal freedom
+
+Pisces: Somehow both 5 and 50 years old at once; Thinks everything is a sign; Can't remember if they dreamt it or it actually happened; Excessively romantic; Prone to fantasy; No boundaries
+
+My top artists on spotify are Taylor Swift, Mac Miller, Miley Cyrus, Noah Kahan, STRFKR, boygenius, One Direction, Harry Styles, Dominic Fike, Lorde, and Tame Impala. 
+
+My top genres are pop, hip hop, rap, indie, singer-songwriter pop, indie rock, indietronica, indie pop, boy band, pop, post-teen pop, talent showa
+
+Guess my zodiac sign based on this. Please format your answer in the following format, with no additional text: 
+"Your Zodiac sign is likely [Zodiac Sign]. (List of reasons why)
+1.
+2.
+3.
+"
+
+
+api keys
+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
+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
