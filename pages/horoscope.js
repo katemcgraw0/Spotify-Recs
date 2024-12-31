@@ -72,7 +72,8 @@ const HoroscopePage = () => {
         const data = await response.json()
 
         const colonIndex = data.result.indexOf(':')
-        const signEndIndex = data.result.indexOf('.')
+        const signEndIndex = data.result.indexOf('1')
+        console.log(data.result)
         if (colonIndex !== -1) {
           const substring = data.result
             .substring(colonIndex + 1, signEndIndex)
