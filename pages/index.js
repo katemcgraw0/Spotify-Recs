@@ -15,7 +15,7 @@ export default function Home () {
       <main className='text-center'>
         <h1 className='text-3xl font-bold mb-4 font-custom text-black'>
           <img
-            src='/zodiacify.png'
+            src='/zodiacify.jpg'
             alt='Zodiacify Logo'
             className='inline-block h-10 mr-2 '
           />
@@ -54,7 +54,7 @@ export default function Home () {
 
               <Link legacyBehavior href='/artists'>
                 <a className='common-button-style bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded'>
-                  View Favorite Artists
+                  Listening History
                 </a>
               </Link>
 
